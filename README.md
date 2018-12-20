@@ -5,11 +5,11 @@
 Siguiendo el modelo de implementación del concepto de *Tabla Hash* con Listas de Desborde, se solicita ahora implementar una clase ```TSB_OAHashtable``` (por _TSB Open Addressing Hash Table_), que represente una _Tabla Hash_ pero con estrategia de _Direccionamiento Abierto_ para la resolución de colisiones.
 
 La clase debe ser implementada en forma rigurosa, siguiendo el modelo ya presentado para la clase ```TSBHashtable```. Esto implica:
-- Implementar la interface _Map<K, V>_ y desde ella, los mismos métodos que se implementaron para la clase ```TSBHashtable```.
-- Definir dentro de la clase ```TSB_OAHashtable``` una clase interna _Entry_ que implemente la interface _Map.Entry<K, V>_ para representar a cada par que se almacene en la tabla.
-- Definir dentro de la clase ```TSB_OAHashtable``` las tres clases internas para gestionar las vistas _stateless de claves_, de _valores_ y de _pares de la tabla_, incluyendo a su vez en ellas las clases internas para representar a los iteradores asociados a cada vista.
-- Redefinir en la clase ```TSB_OAHashtable``` los métodos _equals()_, _hashCode()_, _clone()_ y _toString()_ que se heredan desde _Object_.
-- Definir en la clase ```TSB_OAHashtable``` los métodos _rehash()_ y _contains(value)_ que no vienen especificados por _Map_, pero son especialmente propios de la clase (emulando a _java.util.Hashtable_).
+- [x] Implementar la interface _Map<K, V>_ y desde ella, los mismos métodos que se implementaron para la clase ```TSBHashtable```.
+- [ ] Definir dentro de la clase ```TSB_OAHashtable``` una clase interna _Entry_ que implemente la interface _Map.Entry<K, V>_ para representar a cada par que se almacene en la tabla.
+- [ ] Definir dentro de la clase ```TSB_OAHashtable``` las tres clases internas para gestionar las vistas _stateless de claves_, de _valores_ y de _pares de la tabla_, incluyendo a su vez en ellas las clases internas para representar a los iteradores asociados a cada vista.
+- [ ] Redefinir en la clase ```TSB_OAHashtable``` los métodos _equals()_, _hashCode()_, _clone()_ y _toString()_ que se heredan desde _Object_.
+- [ ] Definir en la clase ```TSB_OAHashtable``` los métodos _rehash()_ y _contains(value)_ que no vienen especificados por _Map_, pero son especialmente propios de la clase (emulando a _java.util.Hashtable_).
 
 La idea es tomar como modelo al que se presentó para la clase ```TSBHashtable``` en la Ficha 10, e implementar los mismos métodos publicos y protegidos de esa clase, más las clases internas citadas. Obviamente, con relación a los atributos privados y  métodos privados, cada grupo de trabajo hará su propia propuesta y diseño.
 
