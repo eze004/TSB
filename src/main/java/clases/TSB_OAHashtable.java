@@ -24,7 +24,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
     private final static int MAX_SIZE = Integer.MAX_VALUE;
 
     // El array hash
-    private Map.Entry<K, V> table[];
+    private Entry<K, V> table[];
     private int states[];
 
     // el tamaño inicial de la tabla (tamaño con el que fue creada)...
@@ -86,11 +86,11 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
             }
         }
 
-        // Se crea la tabla de Map.Entry
-        this.table = new Map.Entry[this.initial_capacity];
+        // Se crea la tabla de Entry
+        this.table = new Entry[initial_capacity];
 
         // Inicializo el vector de estados
-        states = new int[this.initial_capacity];
+        states = new int[initial_capacity];
         for (int i = 0; i < states.length; i++) {
             states[i] = 0;
         }
@@ -267,7 +267,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
         this.modCount++;
 
         // Verifico el factor de carga
-        float fc = (float) this.table.length / (float) count;
+        float fc = (float) count / (float) this.table.length;
         if (fc >= this.load_factor)
             this.rehash();
 
@@ -348,8 +348,8 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
     @Override
     public void clear() {
 
-        // Se recrea la tabla de Map.Entry
-        this.table = new Map.Entry[this.initial_capacity];
+        // Se recrea la tabla de Entry
+        this.table = new Entry[this.initial_capacity];
 
         // Inicializo el vector de estados
         states = new int[this.initial_capacity];
@@ -1240,8 +1240,13 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
         StringBuilder cad = new StringBuilder("");
         cad.append("\nTabla: {\n");
         for (int i = 0; i < this.table.length; i++) {
-            cad.append(this.table[i].toString()).append(" ,\n");
+            if(this.table[i] == null){
+                cad.append("\t()\n");
+            }else{
+                cad.append("\t").append(this.table[i].toString()).append("\n");
+            }
         }
+        cad.append("}");
         return cad.toString();
     }
 
@@ -1341,7 +1346,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
             new_length = TSB_OAHashtable.MAX_SIZE;
 
         // crear el nueva tabla con new_length y estados
-        Map.Entry<K, V> tempTable[] = new Map.Entry[new_length];
+        Entry<K, V> tempTable[] = new Entry[new_length];
         int tempStates[] = new int[new_length];
 
         // Inicializo los estados
@@ -1355,7 +1360,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
             if(this.states[i] == 1){
 
                 // obtengo un objeto cerrado de la vieja lista...
-                Map.Entry<K, V> x = this.table[i];
+                Entry<K, V> x = this.table[i];
 
                 // obtengo su nuevo valor de dispersión para el nuevo arreglo...
                 K key = x.getKey();
