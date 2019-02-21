@@ -182,7 +182,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
         while (this.states[ic] != 0) {
             // Si en la posicion actual esta cerrada verifico si es el mismo
             if (this.states[ic] == 1) {
-                Map.Entry<K, V> entry = this.table[ic];
+                Entry<K, V> entry = this.table[ic];
 
                 // Si es el mismo devuelvo el value
                 if(key.equals(entry.getKey())){
@@ -232,7 +232,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
 
             // Si en la posicion actual esta cerrada verifico si es el mismo
             if (this.states[ic] == 1) {
-                Map.Entry<K, V> entry = this.table[ic];
+                Entry<K, V> entry = this.table[ic];
                 // Si es el mismo lo piso y devuelvo el value viejo
                 if(key.equals(entry.getKey())){
                     old = entry.getValue();
@@ -298,7 +298,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
 
             // Si en la posicion actual esta cerrada verifico si es el mismo
             if (this.states[ic] == 1) {
-                Map.Entry<K, V> entry = this.table[ic];
+                Entry<K, V> entry = this.table[ic];
 
                 // Si es el mismo lo elimino y devuelvo el value
                 if(key.equals(entry.getKey())){
@@ -429,6 +429,8 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
      * Set.remove(), removeAll(), retainAll() and clear()). El conjunto vista no
      * soporta las operaciones add() y addAll() (si se las invoca, se lanzará una
      * UnsuportedOperationException).
+     * 
+     * @return
      * 
      * @return un conjunto (un Set) a modo de vista de todos los objetos mapeados en
      *         la tabla.
@@ -657,7 +659,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
             @Override
             public boolean hasNext() {
                 // variable auxiliar t y s para simplificar accesos...
-                Map.Entry<K, V> t[] = TSB_OAHashtable.this.table;
+                Entry<K, V> t[] = TSB_OAHashtable.this.table;
                             int s[] = TSB_OAHashtable.this.states;
 
                 if(current_entry >= t.length) { return false; }
@@ -687,7 +689,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
                 }
 
                 // variable auxiliar t y s para simplificar accesos...
-                Map.Entry<K, V> t[] = TSB_OAHashtable.this.table;
+                Entry<K, V> t[] = TSB_OAHashtable.this.table;
                             int s[] = TSB_OAHashtable.this.states;
 
                 // busco el siguiente indice cerrado
@@ -765,10 +767,10 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
                 return false;
             }
             // variable auxiliar t y s para simplificar accesos...
-            Map.Entry<K, V> t[] = TSB_OAHashtable.this.table;
+            Entry<K, V> t[] = TSB_OAHashtable.this.table;
             int s[] = TSB_OAHashtable.this.states;
 
-            Map.Entry<K, V> entry = (Map.Entry<K, V>) o;
+            Entry<K, V> entry = (Entry<K, V>) o;
             
             //Tomo el primer indice
             int ih = TSB_OAHashtable.this.h(entry.getKey());
@@ -779,7 +781,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
             while (s[ic] != 0) {
                 // Si la posicion actual esta cerrada verifico si es el mismo
                 if (s[ic] == 1) {
-                    Map.Entry<K, V> entryTable = t[ic];
+                    Entry<K, V> entryTable = t[ic];
                     
                     // Si es el mismo retorno true
                     if(entryTable.equals(entry)) return true;
@@ -813,10 +815,10 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
             }
 
             // variable auxiliar t y s para simplificar accesos...
-            Map.Entry<K, V> t[] = TSB_OAHashtable.this.table;
+            Entry<K, V> t[] = TSB_OAHashtable.this.table;
             int s[] = TSB_OAHashtable.this.states;
 
-            Map.Entry<K, V> entry = (Map.Entry<K, V>) o;
+            Entry<K, V> entry = (Entry<K, V>) o;
 
 
             //Tomo el primer indice
@@ -829,7 +831,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
 
                 // Si en la posicion actual esta cerrada verifico si es el mismo
                 if (s[ic] == 1) {
-                    Map.Entry<K, V> entryTable = t[ic];
+                    Entry<K, V> entryTable = t[ic];
 
                     // Si es el mismo lo elimino y devuelvo true
                     if(entryTable.equals(entry)){
@@ -897,7 +899,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
             @Override
             public boolean hasNext() {
                 // variable auxiliar t y s para simplificar accesos...
-                Map.Entry<K, V> t[] = TSB_OAHashtable.this.table;
+                Entry<K, V> t[] = TSB_OAHashtable.this.table;
                             int s[] = TSB_OAHashtable.this.states;
 
                 if(current_entry >= t.length) { return false; }
@@ -916,7 +918,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
              * Retorna el siguiente elemento disponible en la tabla.
              */
             @Override
-            public Map.Entry<K, V> next() {
+            public Entry<K, V> next() {
                 // control: fail-fast iterator...
                 if (TSB_OAHashtable.this.modCount != expected_modCount) {
                     throw new ConcurrentModificationException("next(): modificación inesperada de tabla...");
@@ -927,7 +929,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
                 }
 
                 // variable auxiliar t y s para simplificar accesos...
-                Map.Entry<K, V> t[] = TSB_OAHashtable.this.table;
+                Entry<K, V> t[] = TSB_OAHashtable.this.table;
                             int s[] = TSB_OAHashtable.this.states;
 
                 // busco el siguiente indice cerrado
@@ -1031,7 +1033,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
             @Override
             public boolean hasNext() {
                 // variable auxiliar t y s para simplificar accesos...
-                Map.Entry<K, V> t[] = TSB_OAHashtable.this.table;
+                Entry<K, V> t[] = TSB_OAHashtable.this.table;
                             int s[] = TSB_OAHashtable.this.states;
 
                 if(current_entry >= t.length) { return false; }
@@ -1061,7 +1063,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
                 }
 
                 // variable auxiliar t y s para simplificar accesos...
-                Map.Entry<K, V> t[] = TSB_OAHashtable.this.table;
+                Entry<K, V> t[] = TSB_OAHashtable.this.table;
                             int s[] = TSB_OAHashtable.this.states;
 
                 // busco el siguiente indice cerrado
@@ -1221,6 +1223,8 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
     @Override
     public int hashCode()
     {
+        if(this.isEmpty()) return 0;
+
         int hc = 0;
         for(Map.Entry<K, V> entry : this.entrySet())
         {
