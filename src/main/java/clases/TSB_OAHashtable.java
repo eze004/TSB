@@ -198,7 +198,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
         int ih = this.h((K)key);
         int ic = ih;
         int j = 1;
-        V old = null;
+        V valueReturn = null;
 
         // Busco el elemento a encontrar
         while (this.states[ic] != 0) {
@@ -208,8 +208,8 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
 
                 // Si es el mismo devuelvo el value
                 if(key.equals(entry.getKey())){
-                    old = entry.getValue();
-                    return old;
+                    valueReturn = entry.getValue();
+                    return valueReturn;
                 }
             }
 
@@ -222,7 +222,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
         }
 
         // Si la clave no estaba asociada devolvemos null
-        return null;
+        return valueReturn;
     }
 
     /**
@@ -344,7 +344,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
         }
 
         // Si la clave no estaba asociada devolvemos null
-        return null;
+        return old;
     }
 
     /**
