@@ -2,6 +2,7 @@ package clases;
 
 import java.io.Serializable;
 import java.util.AbstractSet;
+import java.util.Arrays;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
@@ -25,6 +26,22 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
 
     // El array hash
     private Entry<K, V> table[];
+    
+    /**
+     * Como mejora se me propuso que en vez de manejar los estados con:
+     * 0: Abierta
+     * 1: Cerrada
+     * 2: Tumba
+     * creara variables finales staticas que ya tuvieran ese valor,
+     * de esa forma el codigo seria mas legible.
+     * 
+     * Otras porupuestas:
+     * 1) En vez de usar un array de int's utilizar un Enum
+     * (Esto traeria mayor uso de la memoria por lo cual no es muy recomendable)
+     * 
+     * 2) Se podria agregar un atributo mas a Entry que fuera estado,
+     * pero esto requeriria un desarrollo extra que puede no terminar siendo  practico o de buen rendimiento.
+     */
     private int states[];
 
     // el tamaño inicial de la tabla (tamaño con el que fue creada)...
@@ -91,6 +108,11 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
 
         // Inicializo el vector de estados
         states = new int[initial_capacity];
+
+        /**
+         * Esto no haria falta ya que en la inicializacion del vector int[]
+         * Java ya setea a todos los valores en 0
+         */
         for (int i = 0; i < states.length; i++) {
             states[i] = 0;
         }
@@ -353,6 +375,11 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
 
         // Inicializo el vector de estados
         states = new int[this.initial_capacity];
+
+        /**
+         * Esto no haria falta ya que en la inicializacion del vector int[]
+         * Java ya setea a todos los valores en 0
+         */
         for (int i = 0; i < states.length; i++) {
             states[i] = 0;
         }
@@ -1209,7 +1236,11 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
             }
         }
 
-        catch (ClassCastException | NullPointerException e) {
+        /**
+         * Nunca se deberia capturar un NullPointerException porque eso significa
+         * que hay un error en la logica del codigo.
+         */
+        catch (ClassCastException e) {
             return false;
         }
 
@@ -1225,13 +1256,12 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
     {
         if(this.isEmpty()) return 0;
 
-        int hc = 0;
-        for(Map.Entry<K, V> entry : this.entrySet())
-        {
-            hc += entry.hashCode();
-        }
-
-        return hc;
+        /**
+         * En este caso es recomendable usar la funcion Arrays.hashCode porque
+         * garantiza un hash unico para cada array.
+         * Si se usa la suma, los objetos "ab" y "ba" tendrian el mismo hash.
+         */
+        return Arrays.hashCode(this.table);
     }
 
     /**
@@ -1265,7 +1295,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
     protected Object clone() throws CloneNotSupportedException 
     {
         // Se crea una nueva instancia de TSB_OAHashtable
-        TSB_OAHashtable<K, V> t = new TSB_OAHashtable<>(this.initial_capacity, this.load_factor);
+        TSB_OAHashtable<K, V> t = new TSB_OAHashtable<>(this.table.length, this.load_factor);
 
         // copio todos los elementos
         for(Map.Entry<K, V> entry : this.entrySet()){
@@ -1369,10 +1399,26 @@ public class TSB_OAHashtable<K, V> implements Map<K, V>, Cloneable, Serializable
                 // obtengo su nuevo valor de dispersión para el nuevo arreglo...
                 K key = x.getKey();
                 int y = this.h(key, tempTable.length);
+                int ic = y, j = 1;
+
+                /**
+                 * Si bien, se puede demostrar que si el tamaño de la tabla es un número primo 
+                 * y el porcentaje de ocupación no es mayor al 50% de la tabla
+                 * la exploración cuadrática garantiza que la clave será insertada, 
+                 * deberiamos controlar que no haya desbordamiento en la nueva tabla del rehash
+                 * */
+                while (tempStates[ic] != 0) {
+                    // Calculo el nuevo indice en base a la nueva tabla
+                    ic += j * j;
+                    j++;
+                    if (ic >= tempTable.length) {
+                        ic %= tempTable.length;
+                    }
+                }
 
                 // Se inserta en el nuevo arreglo
-                tempTable[y] = x;
-                tempStates[y] = 1;
+                tempTable[ic] = x;
+                tempStates[ic] = 1;
             }
         }
 
